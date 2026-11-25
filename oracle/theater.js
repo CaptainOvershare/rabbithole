@@ -24,7 +24,16 @@ new MutationObserver(enhance).observe(stage,{childList:true,subtree:false});enha
 document.querySelector('#next')?.addEventListener('click',()=>{if(stage.querySelector('.seal'))return;const input=stage.querySelector('#digits');if(input&&W.eggs?.[input.value])say(W.eggs[input.value])});
 document.querySelector('#next')?.addEventListener('pointerdown',()=>{audio();if(stage.querySelector('.seal'))say(W[act+'Voice'])},{passive:true});
 }
-const sigil=document.querySelector('main>.sigil');if(sigil){let count=0;sigil.addEventListener('click',()=>{if(++count===7){const s=document.createElement('section');s.className='classified';const title=document.createElement('p');title.className='eyebrow';title.textContent=W.classifiedTitle;const msg=document.createElement('p');msg.textContent=W.classifiedMessage;s.append(title,msg);document.querySelector('main').append(s);s.scrollIntoView({behavior:reduced?'auto':'smooth'});tone(160,330,.45);say(W.classifiedMessage)}})}
+const sigil=document.querySelector('main>.sigil');
+if(sigil){
+ let count=0;sigil.setAttribute('role','button');sigil.setAttribute('tabindex','0');sigil.setAttribute('aria-label','Omega sigil');sigil.removeAttribute('aria-hidden');
+ const ring=document.createElement('div');ring.className='seven-seals';ring.setAttribute('aria-hidden','true');for(let i=0;i<7;i++){const dot=document.createElement('b');dot.style.setProperty('--angle',i*360/7+'deg');ring.append(dot)}sigil.append(ring);
+ function tap(){if(count>=7)return;count++;ring.children[count-1].classList.add('lit');tone(130*Math.pow(1.19,count),100*Math.pow(1.19,count),.22,0,.065);if(count!==7)return;
+ sigil.classList.add('unsealed');say(W.secret.warning);
+ const s=document.createElement('section');s.className='classified secret-portal';const title=document.createElement('p');title.className='eyebrow';title.textContent=W.secret.access;const h=document.createElement('h2');h.textContent=W.secret.title;const msg=document.createElement('p');msg.textContent=W.classifiedMessage;
+ const link=document.createElement('a');link.className='button';link.href=document.querySelector('#enter')?'oracle/forbidden/':'forbidden/';link.textContent=W.secret.enter;link.addEventListener('click',e=>{if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;e.preventDefault();descend(link,'forbidden')});const note=document.createElement('p');note.className='foot';note.textContent=W.secret.note;s.append(title,h,msg,link,note);document.querySelector('main').append(s);s.scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'});}
+ sigil.addEventListener('click',tap);sigil.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tap()}})
+}
 const foot=document.querySelector('.foot');if(foot&&W.statuses?.length){let i=0;setInterval(()=>{foot.textContent=W.statuses[++i%W.statuses.length]},8500)}
 
 // Shared descent engine. Each portal has its own depth and pacing.
@@ -35,7 +44,7 @@ function descend(link,key){
  panel.innerHTML='<canvas aria-hidden="true"></canvas><div class="descent-message"><div class="depth-label"></div><div class="depth-symbol"></div><div class="depth-message"></div><div class="depth-meter"><i></i></div></div><button id="skip">Skip descent</button>';
  document.body.append(panel);const c=panel.querySelector('canvas'),ctx=c.getContext('2d'),msg=panel.querySelector('.depth-message'),meter=panel.querySelector('.depth-meter i');
  panel.querySelector('.depth-label').textContent=cfg.label;
- panel.querySelector('.depth-symbol').innerHTML=key==='surface'?'<span>Ω</span>':icon(key);
+ panel.querySelector('.depth-symbol').innerHTML=key==='surface'||key==='forbidden'?'<span>Ω</span>':icon(key);
  const started=performance.now(),duration=cfg.seconds;let stopped=false,lastBeat=-10,hasDrop=false;
  const ac=muted?null:audio();let riser=null;
  if(ac){const o=ac.createOscillator(),g=ac.createGain(),filter=ac.createBiquadFilter(),t=ac.currentTime;o.type='sawtooth';o.frequency.setValueAtTime(42,t);o.frequency.exponentialRampToValueAtTime(520,t+duration*.78);filter.type='lowpass';filter.frequency.setValueAtTime(100,t);filter.frequency.exponentialRampToValueAtTime(2300,t+duration*.78);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.045,t+duration*.72);g.gain.exponentialRampToValueAtTime(.0001,t+duration*.8);o.connect(filter);filter.connect(g);g.connect(ac.destination);o.start();o.stop(t+duration*.81);riser=o}

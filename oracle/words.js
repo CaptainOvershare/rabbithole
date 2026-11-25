@@ -1,6 +1,8 @@
 /* EDIT ME: text, voice lines and easter eggs. No calculation logic here. */
 window.ORACLE_WORDS = {
+ secret: {warning:"Unauthorized curiosity detected.",access:"ACCESS LEVEL 07 GRANTED",title:"The Forbidden Experiment",enter:"Continue anyway",note:"Your curiosity has been documented.",intro:"Six rotations. One forbidden multiplier.",start:"Break the first seal",next:"Break the next seal",last:"Break the seventh seal",final:"PATTERN TERMINATED",finalNote:"Six rotations. The seventh breaks the pattern.",voice:"Seven seals broken. Pattern terminated."},
  depths: {
+ forbidden:{depth:4,seconds:8,label:"LEVEL VII · CLASSIFIED",lines:["UNAUTHORIZED CURIOSITY DETECTED","SEVEN SEALS BROKEN","ENTERING THE FORBIDDEN EXPERIMENT"]},
  surface: {depth:0, seconds:16.25, label:"Ω · SURFACE BREACH", lines:["DESCENT INITIATED","SIGNAL ACQUIRED","REALITY BECOMING OPTIONAL","RESISTANCE IS FUTILE","REALITY RECALIBRATED"]},
  prophecy: {depth:1, seconds:5, label:"LEVEL I · PERCEPTION", lines:["DESCENDING","OBSERVING THE UNKNOWN","PERCEPTION RECALIBRATED"]},
  convergence: {depth:2, seconds:5, label:"LEVEL II · PROBABILITY", lines:["DESCENDING FURTHER","PROBABILITY ENGINE ACTIVE","CHOICES CONVERGING"]},
