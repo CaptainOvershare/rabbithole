@@ -26,5 +26,31 @@ document.querySelector('#next')?.addEventListener('pointerdown',()=>{audio();if(
 }
 const sigil=document.querySelector('main>.sigil');if(sigil){let count=0;sigil.addEventListener('click',()=>{if(++count===7){const s=document.createElement('section');s.className='classified';const title=document.createElement('p');title.className='eyebrow';title.textContent=W.classifiedTitle;const msg=document.createElement('p');msg.textContent=W.classifiedMessage;s.append(title,msg);document.querySelector('main').append(s);s.scrollIntoView({behavior:reduced?'auto':'smooth'});tone(160,330,.45);say(W.classifiedMessage)}})}
 const foot=document.querySelector('.foot');if(foot&&W.statuses?.length){let i=0;setInterval(()=>{foot.textContent=W.statuses[++i%W.statuses.length]},8500)}
-const enter=document.querySelector('#enter');if(enter)enter.addEventListener('click',e=>{e.preventDefault();if(document.querySelector('#descent'))return;const destination=enter.href;if(reduced){location.href=destination;return}drop();const panel=document.createElement('div');panel.id='descent';panel.innerHTML='<canvas aria-hidden="true"></canvas><div class="descent-message"><span>Ω</span><div></div></div><button id="skip">Skip descent</button>';document.body.append(panel);const c=panel.querySelector('canvas'),ctx=c.getContext('2d'),msg=panel.querySelector('.descent-message div');const start=performance.now();let stopped=false;function go(){if(stopped)return;stopped=true;location.href=destination}panel.querySelector('#skip').onclick=go;function frame(now){if(stopped)return;const t=(now-start)/1000,phase=Math.min(2,Math.floor(t/1.05));msg.textContent=W.descent?.[phase]||'DESCENT';const dpr=Math.min(devicePixelRatio||1,2),w=innerWidth,h=innerHeight;if(c.width!==Math.round(w*dpr)||c.height!==Math.round(h*dpr)){c.width=Math.round(w*dpr);c.height=Math.round(h*dpr)}ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='#03070d';ctx.fillRect(0,0,w,h);ctx.save();ctx.translate(w/2,h/2);const speed=t*t*.42+t*.35;for(let i=0;i<30;i++){const z=(i/30+speed)%1,r=12*Math.pow(Math.max(w,h)/8,z);ctx.save();ctx.rotate(z*2.6+t*.26);ctx.strokeStyle=i%3?'rgba(220,192,138,'+(.15+z*.6)+')':'rgba(131,222,201,'+(.15+z*.6)+')';ctx.lineWidth=1+z*2;ctx.strokeRect(-r,-r,2*r,2*r);if(i%3===0){ctx.font=(10+z*15)+'px Georgia';ctx.fillStyle=ctx.strokeStyle;ctx.fillText(['Ω','π','∞','∑','0','φ'][i%6],r,0)}ctx.restore()}ctx.restore();if(t<3.25)requestAnimationFrame(frame);else go()}requestAnimationFrame(frame)});
+
+// Shared descent engine. Each portal has its own depth and pacing.
+function descend(link,key){
+ const cfg=W.depths[key],destination=link.href;if(document.querySelector('#descent'))return;
+ if(reduced){location.href=destination;return}
+ const panel=document.createElement('div');panel.id='descent';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Descent in progress');
+ panel.innerHTML='<canvas aria-hidden="true"></canvas><div class="descent-message"><div class="depth-label"></div><div class="depth-symbol"></div><div class="depth-message"></div><div class="depth-meter"><i></i></div></div><button id="skip">Skip descent</button>';
+ document.body.append(panel);const c=panel.querySelector('canvas'),ctx=c.getContext('2d'),msg=panel.querySelector('.depth-message'),meter=panel.querySelector('.depth-meter i');
+ panel.querySelector('.depth-label').textContent=cfg.label;
+ panel.querySelector('.depth-symbol').innerHTML=key==='surface'?'<span>Ω</span>':icon(key);
+ const started=performance.now(),duration=cfg.seconds;let stopped=false,lastBeat=-10,hasDrop=false;
+ const ac=muted?null:audio();let riser=null;
+ if(ac){const o=ac.createOscillator(),g=ac.createGain(),filter=ac.createBiquadFilter(),t=ac.currentTime;o.type='sawtooth';o.frequency.setValueAtTime(42,t);o.frequency.exponentialRampToValueAtTime(520,t+duration*.78);filter.type='lowpass';filter.frequency.setValueAtTime(100,t);filter.frequency.exponentialRampToValueAtTime(2300,t+duration*.78);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.045,t+duration*.72);g.gain.exponentialRampToValueAtTime(.0001,t+duration*.8);o.connect(filter);filter.connect(g);g.connect(ac.destination);o.start();o.stop(t+duration*.81);riser=o}
+ function go(){if(stopped)return;stopped=true;try{riser?.stop()}catch(e){}location.href=destination}
+ panel.querySelector('#skip').onclick=go;panel.querySelector('#skip').focus({preventScroll:true});
+ panel.addEventListener('keydown',e=>{if(e.key==='Escape')go()});
+ function frame(now){if(stopped)return;const t=(now-started)/1000,p=Math.min(1,t/duration),phase=Math.min(cfg.lines.length-1,Math.floor(p*cfg.lines.length));msg.textContent=cfg.lines[phase];meter.style.width=(p*100)+'%';
+ const interval=1.25-.82*p;if(t-lastBeat>interval&&p<.79){lastBeat=t;tone(82,43,.18,0,.14);tone(72,39,.15,.19,.09)}
+ if(p>=.80&&!hasDrop){hasDrop=true;tone(110,35,1.5,0,.21);tone(82,39,1.2,0,.055,'triangle');tone(150,48,.4,0,.065,'triangle');for(let i=0;i<3;i++)tone(92,38,.32,.27+i*.24,.09)}
+ if(ctx){const dpr=Math.min(devicePixelRatio||1,2),w=innerWidth,h=innerHeight;if(c.width!==Math.round(w*dpr)||c.height!==Math.round(h*dpr)){c.width=Math.round(w*dpr);c.height=Math.round(h*dpr)}ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='#03070d';ctx.fillRect(0,0,w,h);ctx.save();ctx.translate(w/2,h/2);
+ const speed=t*.14+t*t*(.018+cfg.depth*.012)+Math.max(0,p-.79)*3;
+ for(let i=0;i<30;i++){const z=(i/30+speed)%1,r=12*Math.pow(Math.max(w,h)/8,z);ctx.save();ctx.rotate(z*(2.6+cfg.depth*.45)+t*(.13+cfg.depth*.05));ctx.strokeStyle=i%3?'rgba(220,192,138,'+(.15+z*.6)+')':'rgba(131,222,201,'+(.15+z*.6)+')';ctx.lineWidth=1+z*2;ctx.strokeRect(-r,-r,2*r,2*r);if(i%3===0){ctx.font=(10+z*15)+'px Georgia';ctx.fillStyle=ctx.strokeStyle;ctx.fillText(['Ω','π','∞','∑','0','φ'][i%6],r,0)}ctx.restore()}ctx.restore()}
+ if(p<1)requestAnimationFrame(frame);else go()}
+ requestAnimationFrame(frame)
+}
+const enter=document.querySelector('#enter');if(enter)enter.addEventListener('click',e=>{if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;e.preventDefault();descend(enter,'surface')});
+document.querySelectorAll('nav a').forEach(link=>{const key=link.getAttribute('href').split('/')[0];if(W.depths?.[key])link.addEventListener('click',e=>{if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;e.preventDefault();descend(link,key)})});
 })();
