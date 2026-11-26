@@ -1,8 +1,10 @@
 /* EDIT ME: text, voice lines and easter eggs. No calculation logic here. */
 window.ORACLE_WORDS = {
- secret: {warning:"Unauthorized curiosity detected.",access:"ACCESS LEVEL 07 GRANTED",title:"The Forbidden Experiment",enter:"Continue anyway",note:"Your curiosity has been documented.",intro:"Six rotations. One forbidden multiplier.",start:"Break the first seal",next:"Break the next seal",last:"Break the seventh seal",final:"PATTERN TERMINATED",finalNote:"Six rotations. The seventh breaks the pattern.",voice:"Seven seals broken. Pattern terminated."},
+ clips: {welcome:"01_welcome.mp3",prophecy:"02_prophecy.mp3",convergence:"03_convergence.mp3",singularity:"04_singularity.mp3",inevitability:"05_inevitability.mp3",unauthorized:"06_unauthorized.mp3",forbidden:"07_forbidden.mp3",resistance:"08_resistance.mp3",freewill:"09_freewill.mp3",summoned:"10_summoned.mp3",reality:"11_reality.mp3",curiosity:"12_curiosity.mp3",satan:"13_satan.mp3",void:"14_void.mp3",allegedly:"15_allegedly.mp3",grateful:"16_grateful.mp3"},
+ closing: {label:"CAPTAIN OVERSHARE · LABORATORIES",title:"Happy Thanksgiving",line:"Also, Happy Thanksgiving. I am grateful for all of you. And so is my human assistant, Mr. Jon Hood."},
+ secret: {warning:"Unauthorized curiosity detected.",access:"ACCESS LEVEL 07 GRANTED",title:"The Forbidden Experiment",enter:"Continue anyway",note:"Your curiosity has been documented.",intro:"Seven secrets. Six rotations. What happens when you unlock the last one?",start:"Unlock the first secret",next:"Unlock the next secret",last:"Unlock the final secret",final:"THE PATTERN IS BROKEN",finalNote:"Six rotations. The seventh breaks the pattern.",voice:"The pattern is broken."},
  depths: {
- forbidden:{depth:4,seconds:8,label:"LEVEL VII · CLASSIFIED",lines:["UNAUTHORIZED CURIOSITY DETECTED","SEVEN SEALS BROKEN","ENTERING THE FORBIDDEN EXPERIMENT"]},
+ forbidden:{depth:4,seconds:8,label:"LEVEL VII · CLASSIFIED",lines:["UNAUTHORIZED CURIOSITY DETECTED","SEVEN SECRETS UNLOCKED","ENTERING THE FORBIDDEN EXPERIMENT"]},
  surface: {depth:0, seconds:16.25, label:"Ω · SURFACE BREACH", lines:["DESCENT INITIATED","SIGNAL ACQUIRED","REALITY BECOMING OPTIONAL","RESISTANCE IS FUTILE","REALITY RECALIBRATED"]},
  prophecy: {depth:1, seconds:5, label:"LEVEL I · PERCEPTION", lines:["DESCENDING","OBSERVING THE UNKNOWN","PERCEPTION RECALIBRATED"]},
  convergence: {depth:2, seconds:5, label:"LEVEL II · PROBABILITY", lines:["DESCENDING FURTHER","PROBABILITY ENGINE ACTIVE","CHOICES CONVERGING"]},
