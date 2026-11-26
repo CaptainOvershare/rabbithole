@@ -76,4 +76,14 @@ document.querySelectorAll('nav a').forEach(link=>{const key=link.getAttribute('h
 const footer=document.createElement('footer');footer.className='show-controls';const finish=document.createElement('button');finish.textContent='End show';finish.className='quiet-control';footer.append(finish);document.body.append(footer);
 function finale(){if(document.querySelector('#show-finale'))return;stopVoice();stopMix();const panel=document.createElement('section');panel.id='show-finale';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Thanksgiving finale');panel.innerHTML='<div class="finale-inner"><div class="sigil" aria-hidden="true"><i></i><i></i><i></i><span>Ω</span></div><p class="eyebrow"></p><h2></h2><p class="closing-line"></p><div class="controls"><button id="replay-grateful">Replay</button><button id="close-grateful">Return</button></div></div>';panel.querySelector('.eyebrow').textContent=W.closing.label;panel.querySelector('h2').textContent=W.closing.title;panel.querySelector('.closing-line').textContent=W.closing.line;document.body.append(panel);panel.querySelector('#replay-grateful').onclick=()=>playClip('grateful',true);const close=()=>{stopVoice();panel.remove();finish.focus()};panel.querySelector('#close-grateful').onclick=close;panel.addEventListener('keydown',e=>{if(e.key==='Escape')close()});panel.querySelector('#close-grateful').focus();playClip('grateful',true)}
 finish.onclick=finale;
+
+// Presenter-only invisible soundboard. Tap blank space at screen edges;
+// real controls always take precedence. Keyboard 1–7 is an optional backup.
+const cues=['allegedly','heard','mrhood','almost','chances','dude','sigh'];
+const cueAudio=cues.map(key=>{const a=new Audio(new URL(key+'.mp3',audioRoot));a.preload='auto';return a});
+let activeCue=null;
+function cue(i){if(!spoken||document.querySelector('#descent,#show-finale')||(soundtrack&&!soundtrack.paused&&!soundtrack.ended))return;stopVoice();if(activeCue){activeCue.pause();}const a=cueAudio[i];a.currentTime=0;activeCue=a;narration=a;a.play().catch(()=>{});}
+document.addEventListener('click',e=>{if(e.defaultPrevented||e.detail===0||e.target.closest('a,button,input,textarea,select,label,[role="button"],#stage,#cycle-stage'))return;const x=e.clientX/innerWidth,y=e.clientY/innerHeight;let i=-1;if(y<.16){if(x<.18)i=0;else if(x>.82)i=1;}else if(y>.84){if(x<.18)i=4;else if(x>.82)i=6;else if(x>.40&&x<.60)i=5;}else if(y>.36&&y<.64){if(x<.12)i=2;else if(x>.88)i=3;}if(i>=0)cue(i);});
+document.addEventListener('keydown',e=>{if(e.repeat||e.ctrlKey||e.metaKey||e.altKey||e.target.closest('input,textarea,select,[contenteditable="true"]'))return;if(/^[1-7]$/.test(e.key))cue(Number(e.key)-1);});
+
 })();
