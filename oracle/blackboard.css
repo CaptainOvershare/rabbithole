@@ -1,0 +1,36 @@
+
+/* Isolated classroom layer: no styles escape the dialog. */
+#oracle-blackboard{position:fixed;inset:0;margin:auto;width:min(96vw,1100px);max-width:96vw;max-height:94dvh;overflow:auto;padding:0;border:8px solid #806343;border-radius:5px;background:radial-gradient(ellipse at 25% 10%,#304b3b,#1b352b 55%,#162a23);color:#f2eee0;box-shadow:0 0 0 2px #b69a69,0 20px 90px #000a;font:1rem/1.5 system-ui,sans-serif;overscroll-behavior:contain}
+#oracle-blackboard::backdrop{background:#050a10e8}
+#oracle-blackboard .chalk-frame{padding:clamp(14px,3vw,34px)}
+#oracle-blackboard .chalk-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border-bottom:1px dashed #dce7d588;padding-bottom:14px}
+#oracle-blackboard h2,#oracle-blackboard h3,#oracle-blackboard h4{font-family:"Segoe Print","Bradley Hand","Comic Sans MS",cursive;color:#f4e8c9;line-height:1.2;margin:.5em 0;font-weight:400}
+#oracle-blackboard h2{font-size:clamp(1.65rem,4vw,2.7rem)}
+#oracle-blackboard h3{font-size:clamp(1.35rem,3vw,1.9rem)}
+#oracle-blackboard h4{font-size:1.2rem}
+#oracle-blackboard .chalk-kicker{font-size:.68rem;letter-spacing:.18em;color:#e9d09e;margin:0}
+#oracle-blackboard .chalk-note{font-style:italic;color:#e6ce95}
+#oracle-blackboard button{border:1px solid #dce7d588;background:#203c30;color:#f2eee0;padding:.65rem .8rem;border-radius:4px;letter-spacing:0;min-height:44px}
+#oracle-blackboard button:hover,#oracle-blackboard button:focus-visible,#oracle-blackboard button[aria-pressed=true]{background:#52634a;color:#fff1c8;border-color:#f1d5a1}
+#oracle-blackboard .chalk-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
+#oracle-blackboard .chalk-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:26px;align-items:start}
+#oracle-blackboard .chalk-equations{font-family:"Segoe Print","Bradley Hand","Comic Sans MS",monospace;text-align:center;font-size:clamp(1rem,2.8vw,1.5rem);padding:12px 4px;border-block:1px dashed #dce7d555;color:#f4e8c9;overflow-wrap:anywhere}
+#oracle-blackboard .chalk-equations.small{font-size:clamp(.9rem,2.5vw,1.2rem)}
+#oracle-blackboard em{color:#ffe1a3}
+#oracle-blackboard .chalk-repeat{text-decoration:overline}
+#oracle-blackboard .chalk-pairs{display:grid;max-width:240px;margin:auto;font:1.7rem monospace}
+#oracle-blackboard .chalk-pairs div{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
+#oracle-blackboard .chalk-pairs div:last-child{border-top:1px solid #dce7d5;color:#ffe1a3}
+#oracle-blackboard .chalk-wheel svg{display:block;width:min(100%,350px);margin:auto}
+#oracle-blackboard .chalk-wheel g{cursor:pointer}
+#oracle-blackboard .chalk-multipliers{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin:8px 0}
+#oracle-blackboard .chalk-calculator{border:1px dashed #dce7d588;border-radius:5px;padding:14px;background:#11271e88}
+#oracle-blackboard .chalk-calculator h3{margin-top:0}
+#oracle-blackboard .chalk-calculator label{display:block;font-size:.8rem}
+#oracle-blackboard #chalk-input,#oracle-blackboard #chalk-answer{width:100%;display:block;text-align:right;font:1.05rem/1.4 monospace;letter-spacing:0;min-height:44px;padding:10px;background:#0f211a;color:#e9f0db;border:1px solid #adc2a4;border-radius:3px;overflow-wrap:anywhere}
+#oracle-blackboard #chalk-answer{font-size:1.2rem;color:#ffe1a3;margin-top:4px}
+#oracle-blackboard #chalk-keys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:12px 0}
+#oracle-blackboard #chalk-keys button{padding:.5rem;font-size:1.15rem}
+#oracle-blackboard footer{text-align:center;border-top:1px dashed #dce7d588;margin-top:24px;padding-top:16px;color:#e6ce95;font-style:italic}
+main>.sigil,main .cycle-wheel,main .seal,main>h2{touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+@media(max-width:680px){#oracle-blackboard .chalk-layout{grid-template-columns:1fr;gap:18px}#oracle-blackboard .chalk-calculator{max-width:380px;width:100%;margin:auto}#oracle-blackboard .chalk-top{gap:5px}}

@@ -91,7 +91,7 @@ finish.onclick=finale;
 const cues=['allegedly','heard','mrhood','almost','chances','dude','sigh'];
 const cueAudio=cues.map(key=>{const a=new Audio(new URL(key+'.mp3',audioRoot));a.preload='auto';return a});
 let activeCue=null;
-function cue(i){if(!spoken||document.querySelector('#descent,#show-finale')||(soundtrack&&!soundtrack.paused&&!soundtrack.ended))return;stopVoice();if(activeCue){activeCue.pause();}const a=cueAudio[i];a.currentTime=0;activeCue=a;narration=a;a.play().catch(()=>{});}
+function cue(i){if(!spoken||document.querySelector('#descent,#show-finale,#oracle-blackboard[open]')||(soundtrack&&!soundtrack.paused&&!soundtrack.ended))return;stopVoice();if(activeCue){activeCue.pause();}const a=cueAudio[i];a.currentTime=0;activeCue=a;narration=a;a.play().catch(()=>{});}
 document.addEventListener('click',e=>{if(e.defaultPrevented||e.detail===0||e.target.closest('a,button,input,textarea,select,label,[role="button"],#stage,#cycle-stage'))return;const x=e.clientX/innerWidth,y=e.clientY/innerHeight;let i=-1;if(y<.16){if(x<.18)i=0;else if(x>.82)i=1;}else if(y>.84){if(x<.18)i=4;else if(x>.82)i=6;else if(x>.40&&x<.60)i=5;}else if(y>.36&&y<.64){if(x<.12)i=2;else if(x>.88)i=3;}if(i>=0)cue(i);});
 document.addEventListener('keydown',e=>{if(e.repeat||e.ctrlKey||e.metaKey||e.altKey||e.target.closest('input,textarea,select,[contenteditable="true"]'))return;if(/^[1-7]$/.test(e.key))cue(Number(e.key)-1);});
 
